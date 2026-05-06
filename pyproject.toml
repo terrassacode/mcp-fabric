@@ -1,0 +1,22 @@
+[project]
+name = "mcp-fabric"
+version = "0.1.0"
+description = "Servidor MCP que expone patrones de Fabric CLI como herramientas para LLMs."
+authors = [
+    { name = "Albert" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "mcp"
+]
+
+# Permite instalar el paquete con `pip install .`
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+# Permite ejecutar el servidor con `mcp-fabric`
+[project.scripts]
+mcp-fabric = "mcp_fabric.server:main"
