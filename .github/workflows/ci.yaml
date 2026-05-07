@@ -32,9 +32,13 @@ jobs:
 
     - name: Install Fabric
       run: |
-        # Instalamos apuntando al paquete específico de Fabric
-        go install github.com/danielmiessler/fabric@latest
-        # Añadimos el binario al PATH del runner de GitHub
+        # Instalamos usando el subdirectorio donde reside el binario principal
+        go install github.com/danielmiessler/fabric/save@latest
+        # Si el anterior fallara por cambios futuros, este es el comando universal:
+        # go install github.com/danielmiessler/fabric/...@latest
+        
+        # Añadimos el directorio de binarios de Go al PATH de GitHub Actions
+        echo "$(go install github.com/danielmiessler/fabric/save@latest)" 
         echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
