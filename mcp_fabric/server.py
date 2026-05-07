@@ -67,7 +67,7 @@ async def handle_call_tool(name: str, arguments: dict | None) -> types.CallToolR
             
             # Ejecutamos fabric pasándole el texto por el stdin (tubería)
             process = subprocess.run(
-                ["fabric", "--pattern", pattern],
+                ["fab", "--pattern", pattern],
                 input=text,
                 capture_output=True,
                 text=True,
