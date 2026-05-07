@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  # Optamos por Node 24 para evitar las advertencias de deprecación
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -24,30 +20,12 @@ jobs:
         python-version: "3.13"
         cache: 'pip'
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        # Actualizamos a 1.25.x para cumplir con el nuevo requisito de Fabric
-        go-version: '1.25.x'
-
-    - name: Install Fabric
-      run: |
-        # Instalamos usando el subdirectorio donde reside el binario principal
-        go install github.com/danielmiessler/fabric/save@latest
-        # Si el anterior fallara por cambios futuros, este es el comando universal:
-        # go install github.com/danielmiessler/fabric/...@latest
-        
-        # Añadimos el directorio de binarios de Go al PATH de GitHub Actions
-        echo "$(go install github.com/danielmiessler/fabric/save@latest)" 
-        echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest pytest-asyncio
+        # Instalamos mcp, pytest y pytest-asyncio
+        pip install mcp pytest pytest-asyncio
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run tests
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: python -m pytest
